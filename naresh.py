@@ -54,94 +54,62 @@ spark.read.format("csv").load("data/test.txt").toDF("Success").show(20, False)
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
 print()
+csvdf = spark.read.format("csv").option("header","true").load("usdata.csv")
 
-
-print("STARTED=============")
-
-lis = [1 , 2 , 3 , 4]
-print(lis)
-rddin = sc.parallelize(lis)
-
-print("===== RAW RDD LIST=====")
-print(rddin.collect())
-
-addrdd = rddin.map( lambda x : x + 2 )
-
-print("===== mulrdd RDD LIST=====")
-print(addrdd.collect())
-
-mulrdd = rddin.map( lambda x : x *  10 )
-
-print("===== mulrdd RDD LIST=====")
-print(mulrdd.collect())
-
-listr = [ "zeyobron" , "zeyo" , "byte" ]
 print()
-print("=======RAW LIST======")
-print (listr)
 
+print("======== CSV DF==============")
 
-rddstr = sc.parallelize(listr)
 print()
-print("======= RDD LIST=======")
-print(rddstr.collect())
+
+csvdf.show()
 
 
-conrdd = rddstr.map(lambda  x  :  x + "Analytics")
+
+
+
+
+
+parquetdf =  spark.read.format("parquet").load("file5.parquet")
+
 print()
-print("======= conrdd LIST=======")
-print(conrdd.collect())
 
+print("======== parquetdf ==============")
 
-
-filrdd = rddstr.filter(  lambda x : "zeyo" in  x)
 print()
-print("======= filrdd LIST=======")
-print(filrdd.collect())
+
+parquetdf.show()
 
 
-#🔴 FILE READ STATES
 
-data = sc.textFile("state.txt")
+
+
+
+
+orcdf =   spark.read.format("orc").load("data.orc")
+
 print()
-print("====== FILE RDD======")
-print(data.collect())
-data.foreach(print)
 
+print("======== orcdf ==============")
 
-
-flatten = data.flatMap(lambda x : x.split("~"))
 print()
-print("===== flatten LIST======")
-print(flatten.collect())
-flatten.foreach(print)
+
+orcdf.show()
 
 
 
-filstate = flatten.filter(lambda x : 'State' in x)
+
+
+
+
+
+
+jsondf =  spark.read.format("json").load("file4.json")
+
 print()
-print("===== filstate LIST======")
-print(filstate.collect())
-filstate.foreach(print)
 
+print("======== jsondf ==============")
 
-
-states = filstate.map(lambda x : x.replace("State->",""))
 print()
-print("===== states LIST======")
-print(states.collect())
-states.foreach(print)
 
-
-filcity =  flatten.filter(lambda x : 'City' in x)
-print()
-print("===== filcity LIST======")
-print(filcity.collect())
-filcity.foreach(print)
-
-
-cities = filcity.map(lambda x : x.replace("City->",""))
-print()
-print("===== cities LIST======")
-print(cities.collect())
-cities.foreach(print)
+jsondf.show()
