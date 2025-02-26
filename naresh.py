@@ -54,62 +54,18 @@ spark.read.format("csv").load("data/test.txt").toDF("Success").show(20, False)
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
 print()
-csvdf = spark.read.format("csv").option("header","true").load("usdata.csv")
-
-print()
-
-print("======== CSV DF==============")
-
-print()
-
-csvdf.show()
+# 🔴 ALL MOST ALL FILTER
 
 
 
+data = [
+    ("00000", "06-26-2011", 200, "Exercise", "GymnasticsPro", "cash"),
+    ("00001", "05-26-2011", 300, "Exercise", "Weightlifting", "credit"),
+    ("00002", "06-01-2011", 100, "Exercise", "GymnasticsPro", "cash"),
+    ("00003", "06-05-2011", 100, "Gymnastics", "Rings", "credit"),
+    ("00004", "12-17-2011", 300, "Team Sports", "Field", "paytm"),
+    ("00005", "02-14-2011", 200, "Gymnastics", None, "cash")
+]
 
-
-
-
-parquetdf =  spark.read.format("parquet").load("file5.parquet")
-
-print()
-
-print("======== parquetdf ==============")
-
-print()
-
-parquetdf.show()
-
-
-
-
-
-
-
-orcdf =   spark.read.format("orc").load("data.orc")
-
-print()
-
-print("======== orcdf ==============")
-
-print()
-
-orcdf.show()
-
-
-
-
-
-
-
-
-
-jsondf =  spark.read.format("json").load("file4.json")
-
-print()
-
-print("======== jsondf ==============")
-
-print()
-
-jsondf.show()
+df = spark.createDataFrame(data, ["id", "tdate", "amount", "category", "product", "spendby"])
+df.show()
