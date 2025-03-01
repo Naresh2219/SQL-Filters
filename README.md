@@ -63,8 +63,38 @@ This table contains transaction details including the transaction ID, date, amou
 ![image](https://github.com/user-attachments/assets/d6ca108f-411b-4f43-bcf8-b981b44ac167)
 
 # UNION
+# <-- spark.sql("select * from df union all select * from df1").show() -->
 ![image](https://github.com/user-attachments/assets/b7dabde5-472d-45cb-82a1-050be3ed9c99)
 ![image](https://github.com/user-attachments/assets/144b3115-71e4-4297-84c0-3c7a053b1f19)
+
+# Total amount col for Each catogery
+# <-- spark.sql("select category,sum(amount) as sum from df group by category").show() -->
+![image](https://github.com/user-attachments/assets/4b8c30c7-7900-4ea3-8926-ddfd7cf0e51c)
+
+# Total amount category spendby
+# <-- spark.sql("select category,spendby,sum(amount) as sum from df group by category,spendby").show() -->
+![image](https://github.com/user-attachments/assets/fd746ae4-73b6-4d18-8861-e8f25f2e35d7)
+# <-- spark.sql("select category,spendby,sum(amount) as sum,count(amount) as count from df group by category,spendby").show() -->
+![image](https://github.com/user-attachments/assets/031d40ff-6d85-4837-a938-0794735a12fd)
+
+# #what is MAX amount of every category
+# <-- spark.sql("select category, max(amount) as MAX from df group by category").show() -->
+![image](https://github.com/user-attachments/assets/e35c06cf-66c5-4e91-a9b0-3feedac273e6)
+# <-- spark.sql("select category, max(amount) as MAX from df group by category order by category").show() -->
+![image](https://github.com/user-attachments/assets/57297524-989d-4145-b456-106d57edfc69)
+
+# <-- spark.sql("select category, max(amount) as MAX from df group by category order by category desc").show() -->
+![image](https://github.com/user-attachments/assets/563cd221-c79f-43fa-ac33-bfaea377c3a7)
+
+# Window Row Number
+# <-- spark.sql("SELECT category, amount, ROW_NUMBER() OVER (PARTITION BY category ORDER BY amount DESC) AS row_number FROM df").show() -->
+![image](https://github.com/user-attachments/assets/b4fcf820-db4b-4b31-b66f-0b52139738f6)
+
+# <-- spark.sql("SELECT category, amount, rank() OVER (PARTITION BY category ORDER BY amount DESC) AS row_number FROM df").show() -->
+![image](https://github.com/user-attachments/assets/54d2232f-e165-4401-90f1-b96c96cf05b5)
+
+
+
 
 
 
