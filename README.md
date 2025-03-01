@@ -52,8 +52,21 @@ This table contains transaction details including the transaction ID, date, amou
 # Trim Space
 ![image](https://github.com/user-attachments/assets/fdb2af13-559d-4ffb-92c2-59efd6e99180)
 
-# Distinct
+# Distinct & Spendbby
 ![image](https://github.com/user-attachments/assets/0c6ab049-6efb-4a18-aed7-298010af4397)
+![image](https://github.com/user-attachments/assets/5f06b5ae-ece3-44ec-803f-d7cf0095d8d2)
+
+# Substring
+![image](https://github.com/user-attachments/assets/4c0b22f9-caab-4d9c-88a0-9fa198557fa4)
+
+# Split
+![image](https://github.com/user-attachments/assets/d6ca108f-411b-4f43-bcf8-b981b44ac167)
+
+#UNION
+![image](https://github.com/user-attachments/assets/b7dabde5-472d-45cb-82a1-050be3ed9c99)
+![image](https://github.com/user-attachments/assets/144b3115-71e4-4297-84c0-3c7a053b1f19)
+
+
 
 
 
