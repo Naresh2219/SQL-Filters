@@ -29,6 +29,35 @@ This table contains transaction details including the transaction ID, date, amou
 ![image](https://github.com/user-attachments/assets/145e9de2-3b0c-4ab6-aa5c-a2941444d215)
 ![image](https://github.com/user-attachments/assets/2451c7ca-08fe-41dc-913e-377256020715)
 
+# Concat two columns
+![image](https://github.com/user-attachments/assets/712c4192-40ca-419a-8f51-adc3ebd3439e)
+![image](https://github.com/user-attachments/assets/1734f641-4f75-4e13-a0c3-0d157bb324e7)
+![image](https://github.com/user-attachments/assets/45c60701-16d5-49a1-9d84-416f8030cab8)
+
+# lower case
+![image](https://github.com/user-attachments/assets/879904c6-8952-41fb-8bb2-81aaf3025520)
+
+# UPPER CASE 
+![image](https://github.com/user-attachments/assets/11ef8a16-7c7d-413f-a75b-d499c62e8dc4)
+
+# CEIL operation
+![image](https://github.com/user-attachments/assets/e0ec3b65-d93f-4942-bccf-5ada3dc950d2)
+
+# Round operation
+![image](https://github.com/user-attachments/assets/e22b0363-6de9-4102-85f9-efae181f7785)
+
+# Replace Nulls
+![image](https://github.com/user-attachments/assets/1276ffe8-38d4-47b8-9652-5a89db545a1e)
+
+# Trim Space
+![image](https://github.com/user-attachments/assets/fdb2af13-559d-4ffb-92c2-59efd6e99180)
+
+# Distinct
+![image](https://github.com/user-attachments/assets/0c6ab049-6efb-4a18-aed7-298010af4397)
+
+
+
+
 
 
 
