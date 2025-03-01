@@ -62,7 +62,7 @@ This table contains transaction details including the transaction ID, date, amou
 # Split
 ![image](https://github.com/user-attachments/assets/d6ca108f-411b-4f43-bcf8-b981b44ac167)
 
-#UNION
+# UNION
 ![image](https://github.com/user-attachments/assets/b7dabde5-472d-45cb-82a1-050be3ed9c99)
 ![image](https://github.com/user-attachments/assets/144b3115-71e4-4297-84c0-3c7a053b1f19)
 
