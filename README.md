@@ -93,6 +93,34 @@ This table contains transaction details including the transaction ID, date, amou
 # <-- spark.sql("SELECT category, amount, rank() OVER (PARTITION BY category ORDER BY amount DESC) AS row_number FROM df").show() -->
 ![image](https://github.com/user-attachments/assets/54d2232f-e165-4401-90f1-b96c96cf05b5)
 
+# Window lead function
+# <-- spark.sql("select category, amount, lead(amount) over (partition by category order by amount desc) as lead from df").show() -->
+![image](https://github.com/user-attachments/assets/caf8fe7e-d635-4855-b315-d46d6244b7ed)
+# Lag function
+# <-- spark.sql("select category, amount, lag(amount) over (partition by category order by amount desc) as lag from df").show() -->
+![image](https://github.com/user-attachments/assets/da1910b0-3319-48d4-a261-82f813fd94d4)
+
+# Having function
+# <-- spark.sql("select category,count(category) as cnt from df group by category having count(category)>1").show() -->
+![image](https://github.com/user-attachments/assets/f8e89bee-cc4a-4147-80fa-41dff43f3e93)
+
+# Join
+# <-- spark.sql("SELECT a.*,b.product FROM df a join df1 b on a.id=b.id").show() -->
+![image](https://github.com/user-attachments/assets/a0b2624e-0c67-4cc0-9d8e-f07029e6075e)
+
+ 
+# left Join
+# <-- spark.sql("SELECT a.*,b.product FROM df a left join df1 b on a.id=b.id").show() -->
+
+ ![image](https://github.com/user-attachments/assets/bb69748c-2375-4026-a73d-f5d4401d24c4)
+
+
+# Right Join
+# <<-- spark.sql("SELECT a.*,b.product FROM cust a right join prod b on a.id=b.id").show() -->
+![image](https://github.com/user-attachments/assets/3c4e22a1-fb56-4ac7-bf73-96f3b536f9a6)
+
+ 
+
 
 
 
