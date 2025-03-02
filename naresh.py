@@ -148,3 +148,5 @@ prod.show()
 # Having function
 #spark.sql("select category,count(category) as cnt from df group by category having count(category)>1").show()
 #spark.sql("SELECT a.*,b.product FROM df a join df1 b on a.id=b.id").show()
+#spark.sql("SELECT a.*,b.product FROM df a left join df1 b on a.id=b.id").show()
+#spark.sql("SELECT a.*,b.product FROM cust a right join prod b on a.id=b.id").show()
