@@ -57,67 +57,68 @@ print()
 # 🔴 ALL MOST ALL FILTER
 
 
-data4 = [
-    (1, "raj"),
-    (2, "ravi"),
-    (3, "sai"),
-    (5, "rani")
-]
+source_rdd = spark.sparkContext.parallelize([
+    (1, "A"),
+    (2, "B"),
+    (3, "C"),
+    (4, "D")
+],1)
 
-cust = spark.createDataFrame(data4, ["id", "name"]).coalesce(1)
-cust.show()
+target_rdd = spark.sparkContext.parallelize([
+    (1, "A"),
+    (2, "B"),
+    (4, "X"),
+    (5, "F")
+],2)
 
-data3 = [
-    (1, "mouse"),
-    (3, "mobile"),
-    (7, "laptop")
-]
+# Convert RDDs to DataFrames using toDF()
+df1 = source_rdd.toDF(["id", "name"])
+df2 = target_rdd.toDF(["id", "name1"])
 
+# Show the DataFrames
+df1.show()
+df2.show()
 
-
-prod = spark.createDataFrame(data3, ["id", "product"]).coalesce(1)
-prod.show()
-
-
-
-
-
+print("===FULL JOIN====")
 
 
-
-innerjoin = cust.join(prod , ["id"] , "inner")
-
-print("======INNER JOIN======")
-print()
-innerjoin.show()
+fulljoin = df1.join (df2, ["id"] , "full")
+fulljoin.show()
 
 
+match = fulljoin.withColumn("comment",expr("""
 
-left = cust.join(prod, ["id"], "left")
-
-print("======left JOIN======")
-print()
-left.show()
-
-
-right = cust.join(prod, ["id"] , "right")
-
-print("======right JOIN======")
-print()
-right.show()
+                                  case
+                                  when  name=name1  then 'match'
+                                  else 'mismatch'
+                                  end
 
 
 
-full = cust.join(prod, ["id"] , "full" )
+                        """))
 
-print("======full JOIN======")
-print()
-full.show()
+match.show()
 
 
-prod1 = spark.createDataFrame(data3, ["id1", "product"]).coalesce(1)
-prod1.show()
+
+filterdf = match.filter(" comment ='mismatch' ")
+filterdf.show()
 
 
-inner = cust.join(prod1 ,   cust["id"] == prod1["id1"]    , "inner" ).drop("id1")
-inner.show()
+
+finaldf = filterdf.withColumn("comment",expr("""
+
+                                       case
+                                       when name1 is null then 'New in Source'
+                                       when name  is null then 'New in Target'
+                                       else comment
+                                       end
+
+                                    """))
+
+
+finaldf.show()
+
+
+finalfinaldf = finaldf.drop("name","name1")
+finalfinaldf.show()
