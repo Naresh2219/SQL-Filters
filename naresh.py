@@ -56,143 +56,42 @@ spark.read.format("csv").load("data/test.txt").toDF("Success").show(50, False)
 print()
 # 🔴 ALL MOST ALL FILTER
 
-
-# source_rdd = spark.sparkContext.parallelize([
-#     (1, "A"),
-#     (2, "B"),
-#     (3, "C"),
-#     (4, "D")
-# ],1)
+# data = [
+#     ('sai', 'chn', 1),
+#     ('sai', 'hyd', 2),
+#     ('sai', 'chn', 2),
+#     ('sai', 'hyd', 1),
+#     ('zeyo', 'chn', 2),
+#     ('zeyo', 'hyd', 3),
+#     ('zeyo', 'chn', 2),
+#     ('zeyo', 'hyd', 1)
+# ]
 #
-# target_rdd = spark.sparkContext.parallelize([
-#     (1, "A"),
-#     (2, "B"),
-#     (4, "X"),
-#     (5, "F")
-# ],2)
+# # Create a DataFrame using the data and specifying the column names
+# df = spark.createDataFrame(data, ["name", "city", "amount"]).coalesce(1)
 #
-# # Convert RDDs to DataFrames using toDF()
-# df1 = source_rdd.toDF(["id", "name"])
-# df2 = target_rdd.toDF(["id", "name1"])
-#
-# # Show the DataFrames
-# df1.show()
-# df2.show()
-#
-# print("===FULL JOIN====")
-#
-#
-# fulljoin = df1.join (df2, ["id"] , "full")
-# fulljoin.show()
-#
-#
-# match = fulljoin.withColumn("comment",expr("""
-#
-#                                   case
-#                                   when  name=name1  then 'match'
-#                                   else 'mismatch'
-#                                   end
-#
-#
-#
-#                         """))
-#
-# match.show()
-#
-#
-#
-# filterdf = match.filter(" comment ='mismatch' ")
-# filterdf.show()
-#
-#
-#
-# finaldf = filterdf.withColumn("comment",expr("""
-#
-#                                        case
-#                                        when name1 is null then 'New in Source'
-#                                        when name  is null then 'New in Target'
-#                                        else comment
-#                                        end
-#
-#                                     """))
-#
-#
-# finaldf.show()
-#
-#
-# finalfinaldf = finaldf.drop("name","name1")
-# finalfinaldf.show()
-# data = [("A", "AA"), ("B", "BB"), ("C", "CC"), ("AA", "AAA"), ("BB", "BBB"), ("CC", "CCC")]
-#
-# df = spark.createDataFrame(data, ["child", "parent"])
+# # Show the DataFrame
 # df.show()
 #
-#
-# df1  = df
-#
-# df2  = df.withColumnRenamed("child","child1").withColumnRenamed("parent","parent1")
+# print("========== collection  per each name=======")
 #
 #
-# df1.show()
-# df2.show()
-#
-#
-#
-# inner = df1.join(df2,  df1["parent"]== df2["child1"]  , "inner")
-#
-# inner.show()
-#
-#
-#
-# finaldf1 = inner.drop("child1")
-#
-# finaldf1.show()
-#
-#
-# finaldf = finaldf1.withColumnRenamed("parent1", "Grandparent")
-# finaldf.show()
-# 🔴 LEFT_ANTI
-from pyspark.sql.functions import *
+# colldf = df.groupBy("name").agg(  collect_list("amount").alias("collection")  )
+# colldf.show()
+data = [(1, "Mark Ray", "AB"),
+        (2, "Peter Smith", "CD"),
+        (1, "Mark Ray", "EF"),
+        (2, "Peter Smith", "GH"),
+        (2, "Peter Smith", "CD"),
+        (3, "Kate", "IJ")]
 
-data4 = [
-    (1, "raj"),
-    (2, "ravi"),
-    (3, "sai"),
-    (5, "rani")
-]
+myschema = ["custid", "custname", "address"]
 
-cust = spark.createDataFrame(data4, ["id", "name"]).coalesce(1)
-cust.show()
-
-data3 = [
-    (1, "mouse"),
-    (3, "mobile"),
-    (7, "laptop")
-]
+df = spark.createDataFrame(data, schema=myschema)
+df.show()
 
 
+dropdf = df.dropDuplicates()
+dropdf.show()
 
-prod = spark.createDataFrame(data3, ["id", "product"]).coalesce(1)
-prod.show()
-
-
-
-
-
-
-prodlist = prod.select("id").rdd.flatMap(lambda x : x).collect()
-
-print(prodlist)
-
-print()
-print()
-
-fildf = cust.filter(~col("id").isin(prodlist))
-
-fildf.show()
-
-
-
-
-antijoin = cust.join(prod,["id"], "left_anti")
-antijoin.show()
+df.dropDuplicates().groupBy("custid", "custname").agg(collect_set("address")).show()
