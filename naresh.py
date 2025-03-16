@@ -54,44 +54,142 @@ spark.read.format("csv").load("data/test.txt").toDF("Success").show(50, False)
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
 print()
-# 🔴 ALL MOST ALL FILTER
-
-# data = [
-#     ('sai', 'chn', 1),
-#     ('sai', 'hyd', 2),
-#     ('sai', 'chn', 2),
-#     ('sai', 'hyd', 1),
-#     ('zeyo', 'chn', 2),
-#     ('zeyo', 'hyd', 3),
-#     ('zeyo', 'chn', 2),
-#     ('zeyo', 'hyd', 1)
-# ]
+# # 🔴WITHCOLUMN SIMPLE
 #
-# # Create a DataFrame using the data and specifying the column names
-# df = spark.createDataFrame(data, ["name", "city", "amount"]).coalesce(1)
 #
-# # Show the DataFrame
+# data="""
+#
+# {
+#     "id": 1,
+#     "trainer": "sai",
+#     "zeyoAddress": {
+#             "permanentAddress": "hyderabad",
+#             "temporaryAddress": "chennai"
+#     }
+# }
+# """
+#
+# rdd = sc.parallelize([data])
+#
+# df = spark.read.option("multiline","true").json(rdd)
+#
+#
 # df.show()
 #
-# print("========== collection  per each name=======")
+# df.printSchema()
 #
 #
-# colldf = df.groupBy("name").agg(  collect_list("amount").alias("collection")  )
-# colldf.show()
-data = [(1, "Mark Ray", "AB"),
-        (2, "Peter Smith", "CD"),
-        (1, "Mark Ray", "EF"),
-        (2, "Peter Smith", "GH"),
-        (2, "Peter Smith", "CD"),
-        (3, "Kate", "IJ")]
+# flatdata = df.select(
+#
+#     "id",
+#     "trainer",
+#     "zeyoAddress.permanentAddress",
+#     "zeyoAddress.temporaryAddress"
+# )
+#
+# flatdata.show()
+# flatdata.printSchema()
+#
+#
+# withflat = (
+#     df.withColumn( "permanentAddress" , expr("zeyoAddress.permanentAddress"))
+#     .withColumn("temporaryAddress", expr("zeyoAddress.temporaryAddress"))
+#     .drop("zeyoAddress")
+# )
+#
+# withflat.show()
+# withflat.printSchema()
 
-myschema = ["custid", "custname", "address"]
+# 🔴WITHCOLUMN STRUCT INSIDE STRUCT
 
-df = spark.createDataFrame(data, schema=myschema)
+
+# data="""
+#
+# {
+#     "id": 1,
+#     "trainer": "sai",
+#     "zeyoAddress": {
+#         "user": {
+#             "permanentAddress": "hyderabad",
+#             "temporaryAddress": "chennai"
+#         }
+#     }
+# }
+#
+#
+# """
+#
+# rdd = sc.parallelize([data])
+#
+# df = spark.read.option("multiline","true").json(rdd)
+#
+#
+# df.show()
+#
+# df.printSchema()
+#
+#
+# withflat = (
+#     df.withColumn("permanentAddress", expr("zeyoAddress.user.permanentAddress"))
+#     .withColumn("temporaryAddress", expr("zeyoAddress.user.temporaryAddress"))
+#     .drop("zeyoAddress")
+# )
+#
+# withflat.show()
+#
+# withflat.printSchema()
+
+# 🔴WITHCOLUMN IMAGE EXAMPLE
+
+
+data="""
+
+{
+	"id": "000",
+	"type": "donut",
+	"name": "Non cream",
+	"image": {
+		"url": "images/0001.jpg",
+		"width": 200,
+		"height": 200
+	},
+	"thumbnail": {
+		"url": "images/thumbnails/0001.jpg",
+		"width": 33,
+		"height": 33
+	}
+}
+
+
+"""
+
+rdd = sc.parallelize([data])
+
+df = spark.read.option("multiline","true").json(rdd)
+
+
 df.show()
 
+df.printSchema()
 
-dropdf = df.dropDuplicates()
-dropdf.show()
 
-df.dropDuplicates().groupBy("custid", "custname").agg(collect_set("address")).show()
+
+
+withflat = (
+
+    df.withColumn( "i_height" , expr("image.height") )
+    .withColumn( "i_url" , expr("image.url") )
+    .withColumn( "i_width" , expr("image.width") )
+    .withColumn( "t_height" , expr("thumbnail.height") )
+    .withColumn( "t_url" , expr("thumbnail.url") )
+    .withColumn( "t_width" , expr("thumbnail.width") )
+    .drop("image","thumbnail")
+
+
+
+
+)
+
+withflat.show()
+
+withflat.printSchema()
