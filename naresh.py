@@ -53,22 +53,71 @@ spark.read.format("csv").load("data/test.txt").toDF("Success").show(50, False)
 
 ##################🔴🔴🔴🔴🔴🔴 -> DONT TOUCH ABOVE CODE -- TYPE BELOW ####################################
 
-print()
-# # 🔴WITHCOLUMN SIMPLE
-#
-#
+# print()
 # data="""
-#
 # {
 #     "id": 1,
 #     "trainer": "sai",
-#     "zeyoAddress": {
-#             "permanentAddress": "hyderabad",
-#             "temporaryAddress": "chennai"
-#     }
+#         "zeyoStudents": [
+#             "Ankita",
+#             "Ajay"
+#         ]
 # }
 # """
+# data={
+#     "id":1,
+#     "trainer":"Sai",
+#     "zeyostudents":[
+#         "Naresh",
+#         "Yashwanth"
+#     ]
+# }
 #
+# rdd = sc.parallelize([data])
+#
+# df = spark.read.option("multiline","true").json(rdd)
+# df.show()
+# df.printSchema()
+# flatdata = df.selectExpr(
+#     "id",
+#     "trainer",
+#     "explode(zeyostudents) as zeyoStudents"
+# )
+# flatdata.show();
+# flatdata.printSchema();
+
+
+#
+# df.printSchema()
+# data ={
+#     "Name":"Naresh",
+#     "mobile":79320833,
+#     "Boolean":true,
+#     "pets":["DOg,cat"]
+#
+# }
+# rdd = sc.parallelize([data])
+#
+# df = spark.read.option("multiline","true").json(rdd)
+#
+#
+# df.show()
+#
+# df.printSchema()
+
+# ALONG WITH WITH COLUMN
+
+data="""
+{
+    "id": 1,
+    "trainer": "sai",
+        "zeyoStudents": [
+            "Ankita",
+            "Ajay"
+        ]
+}
+"""
+
 # rdd = sc.parallelize([data])
 #
 # df = spark.read.option("multiline","true").json(rdd)
@@ -79,46 +128,50 @@ print()
 # df.printSchema()
 #
 #
-# flatdata = df.select(
+# flatdata = df.selectExpr(
 #
 #     "id",
 #     "trainer",
-#     "zeyoAddress.permanentAddress",
-#     "zeyoAddress.temporaryAddress"
+#     "explode(zeyoStudents) as zeyoStudents"
+#
 # )
 #
 # flatdata.show()
 # flatdata.printSchema()
 #
 #
-# withflat = (
-#     df.withColumn( "permanentAddress" , expr("zeyoAddress.permanentAddress"))
-#     .withColumn("temporaryAddress", expr("zeyoAddress.temporaryAddress"))
-#     .drop("zeyoAddress")
-# )
 #
-# withflat.show()
-# withflat.printSchema()
+#
+#
+# withColexp = df.withColumn("zeyoStudents",expr("explode(zeyoStudents)"))
+#
+# withColexp.show()
+# withColexp.printSchema()
+# 🔴 *FULL CODE-STRUCT INSIDE ARRAY*
 
-# 🔴WITHCOLUMN STRUCT INSIDE STRUCT
+data="""
+{
+	"org": "zeyobron",
+	"trainer": "zeyobron",
+	"location": "Pune",
+	"users": [{
+			"userId": 1,
+			"firstName": "Krish",
+			"lastName": "Lee",
+			"phoneNumber": 123456,
+			"emailAddress": "krish.lee@learningcontainer.com"
+		},
+		{
+			"userId": 2,
+			"firstName": "racks",
+			"lastName": "jacson",
+			"phoneNumber": 123456,
+			"emailAddress": "racks.jacson@learningcontainer.com"
+		}
+	]
+}
+"""
 
-
-# data="""
-#
-# {
-#     "id": 1,
-#     "trainer": "sai",
-#     "zeyoAddress": {
-#         "user": {
-#             "permanentAddress": "hyderabad",
-#             "temporaryAddress": "chennai"
-#         }
-#     }
-# }
-#
-#
-# """
-#
 # rdd = sc.parallelize([data])
 #
 # df = spark.read.option("multiline","true").json(rdd)
@@ -129,67 +182,142 @@ print()
 # df.printSchema()
 #
 #
-# withflat = (
-#     df.withColumn("permanentAddress", expr("zeyoAddress.user.permanentAddress"))
-#     .withColumn("temporaryAddress", expr("zeyoAddress.user.temporaryAddress"))
-#     .drop("zeyoAddress")
+# exploddf = df.withColumn("users",expr("explode(users)"))
+# exploddf.show()
+# exploddf.printSchema()
+#
+#
+# finaldf = exploddf.select(
+#     "location",
+#     "org",
+#     "trainer",
+#     "users.emailAddress",
+#     "users.firstName",
+#     "users.lastName",
+#     "users.phoneNumber",
+#     "users.userId"
 # )
 #
-# withflat.show()
-#
-# withflat.printSchema()
+# finaldf.show()
+# finaldf.printSchema()
+# FULL URL CODE
 
-# 🔴WITHCOLUMN IMAGE EXAMPLE
-
-
-data="""
-
-{
-	"id": "000",
-	"type": "donut",
-	"name": "Non cream",
-	"image": {
-		"url": "images/0001.jpg",
-		"width": 200,
-		"height": 200
-	},
-	"thumbnail": {
-		"url": "images/thumbnails/0001.jpg",
-		"width": 33,
-		"height": 33
-	}
-}
+# FULL URL CODE
 
 
-"""
 
-rdd = sc.parallelize([data])
 
-df = spark.read.option("multiline","true").json(rdd)
+
+import urllib.request
+
+import ssl
+
+urldata = (
+
+    urllib.request
+
+    .urlopen("https://randomuser.me/api/0.8/?results=10",context=ssl._create_unverified_context())
+
+    .read()
+
+    .decode("utf-8")
+
+)
+
+
+
+print(urldata)
+
+rdd = sc.parallelize([urldata])
+
+
+
+df = spark.read.json(rdd)
+
 
 
 df.show()
 
 df.printSchema()
 
+explodedf = df.withColumn("results",expr("explode(results)"))
 
+explodedf.show()
 
-
-withflat = (
-
-    df.withColumn( "i_height" , expr("image.height") )
-    .withColumn( "i_url" , expr("image.url") )
-    .withColumn( "i_width" , expr("image.width") )
-    .withColumn( "t_height" , expr("thumbnail.height") )
-    .withColumn( "t_url" , expr("thumbnail.url") )
-    .withColumn( "t_width" , expr("thumbnail.width") )
-    .drop("image","thumbnail")
-
-
-
+explodedf.printSchema()
+finalexplode =explodedf.select(
+    "nationality",
+    "results.user.cell",
+    "results.user.dob"
 
 )
+finalexplode.show();
+finalexplode.printSchema();
 
-withflat.show()
-
-withflat.printSchema()
+# explodedf.printSchema()
+#
+# finalexplode =  explodedf.select(
+#
+#
+#
+#     "nationality",
+#
+#     "results.user.cell",
+#
+#     "results.user.dob",
+#
+#     "results.user.email",
+#
+#     "results.user.gender",
+#
+#     "results.user.location.city",
+#
+#     "results.user.location.state",
+#
+#     "results.user.location.street",
+#
+#     "results.user.location.zip",
+#
+#     "results.user.md5",
+#
+#     "results.user.name.first",
+#
+#     "results.user.name.last",
+#
+#     "results.user.name.title",
+#
+#     "results.user.password",
+#
+#     "results.user.phone",
+#
+#     "results.user.picture.large",
+#
+#     "results.user.picture.medium",
+#
+#     "results.user.picture.thumbnail",
+#
+#     "results.user.registered",
+#
+#     "results.user.salt",
+#
+#     "results.user.sha1",
+#
+#     "results.user.sha256",
+#
+#     "results.user.username",
+#
+#     "seed",
+#
+#     "version"
+#
+#
+#
+# )
+#
+#
+#
+# finalexplode.show()
+#
+#
+#
+# finalexplode.printSchema()
